@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>NMT – Thay ảnh loading Liên Quân | iPhone/iPad</title>
+  <meta name="description" content="Hướng dẫn thay ảnh loading vào trận Liên Quân Mobile miễn phí trên iPhone, iPad. Chỉnh ảnh đẹp, xóa logo NMT bằng giftcode.">
+  <meta name="theme-color" content="#a3001b">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #3b020b;
+      font-family: 'Segoe UI', 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+      color: #fff0f2;
+      min-height: 100vh;
+      line-height: 1.5;
+      padding: 16px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background-image: radial-gradient(circle at 20% 20%, #8f0e1f 0%, #3b020b 70%);
+    }
+
+    .bg-glow {
+      position: fixed;
+      width: 50vh;
+      height: 50vh;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.25;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bg-glow-1 { background: #ff667a; top: -10%; left: -5%; }
+    .bg-glow-2 { background: #ff2a4a; bottom: -10%; right: -5%; }
+    .bg-glow-3 { background: #c1102b; top: 40%; left: 30%; opacity: 0.15; }
+
+    .app-container {
+      width: 100%;
+      max-width: 1100px;
+      background: rgba(60, 8, 16, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 48px;
+      padding: 28px 22px 20px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+      border: 1px solid rgba(255, 200, 210, 0.2);
+      position: relative;
+      z-index: 2;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-icon img {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: #5c1120;
+      object-fit: cover;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    }
+
+    .brand-text h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffb3b3, #ff4d6d);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .brand-text p {
+      font-size: 0.9rem;
+      color: #fce3e8;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr;
+      gap: 22px;
+    }
+
+    @media (max-width: 800px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .app-container { padding: 20px 12px; border-radius: 28px; }
+      .brand-text h1 { font-size: 1.5rem; }
+    }
+
+    .glass-card {
+      background: rgba(80, 10, 20, 0.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 200, 200, 0.15);
+      border-radius: 28px;
+      padding: 20px 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .step-num {
+      background: #9e1b2f;
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #ffdada;
+    }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    h2 small {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #f3c4ce;
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: flex-start;
+      background: #37050d;
+      border-radius: 20px;
+      padding: 8px;
+      border: 1px solid #b03a4a;
+    }
+    .input-icon { margin: 8px 6px 0 6px; font-size: 1.2rem; }
+    textarea {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #ffe9ee;
+      font-size: 0.9rem;
+      resize: vertical;
+      padding: 8px;
+      outline: none;
+      font-family: inherit;
+      min-height: 80px;
+    }
+    .btn-paste-inline, .btn-paste-inline-modal {
+      background: #a51f33;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .inline-guide-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #6b1322;
+      border-radius: 20px;
+      padding: 10px 14px;
+      margin-top: 12px;
+      color: #ffe4e9;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .inline-guide-button small { color: #f7b6c4; display: block; }
+
+    .change-image-button, .btn-action {
+      background: #c62840;
+      border: none;
+      color: white;
+      font-weight: 800;
+      padding: 12px 22px;
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow: 0 8px 18px #8f1b2d;
+      transition: 0.2s;
+    }
+    .btn-action {
+      background: linear-gradient(135deg, #e13a5b, #b30f2a);
+      width: 100%;
+      font-size: 1.2rem;
+      text-align: center;
+      display: block;
+    }
+    .poster-preview-container {
+      background: #2a040b;
+      border-radius: 28px;
+      padding: 8px;
+      margin-top: 8px;
+    }
+    .aov-poster-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1080 / 1701;
+      max-width: 300px;
+      margin: 0 auto;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #52101a;
+      cursor: grab;
+      touch-action: none;
+    }
+    #posterCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+    .watermark-preview {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.5);
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: white;
+      pointer-events: none;
+    }
+    .no-img-placeholder {
+      position: absolute;
+      inset: 0;
+      background: rgba(30, 0, 5, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: 2px dashed #c05a6c;
+      color: #ffc5cf;
+      cursor: pointer;
+      width: 100%;
+    }
+    .hidden { display: none !important; }
+
+    .title-controls, .crop-controls {
+      margin-top: 14px;
+      background: #3d0710;
+      padding: 12px;
+      border-radius: 20px;
+    }
+    .crop-actions button {
+      background: #a12a3d;
+      border: none;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 30px;
+    }
+    .stat-tile {
+      background: #631423;
+      padding: 12px;
+      border-radius: 18px;
+      text-align: center;
+      font-weight: 700;
+    }
+    .stat-tile strong { font-size: 1.8rem; display: block; }
+    .success { color: #9bffa0; }
+    .rejected { color: #ff9e9e; }
+
+    .mission-box, .code-section {
+      background: rgba(55, 5, 12, 0.7);
+    }
+    .referral-card { background: #430710; padding: 12px; border-radius: 18px; margin-bottom: 10px; }
+    .referral-link-row { display: flex; gap: 8px; align-items: center; }
+    .referral-link-row input { flex: 1; background: #2b050b; border: 1px solid #b33f52; color: white; padding: 8px; border-radius: 30px; }
+    .btn-copy-referral {
+      background: #ff4f7e;
+      border: none;
+      color: white;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(255, 79, 126, 0.4);
+      transition: 0.2s;
+    }
+    .btn-copy-referral:hover { background: #ff6b91; }
+
+    .mission-list { list-style: none; margin-top: 8px; }
+    .mission-item { padding: 8px 4px; border-bottom: 1px solid #6f1c2a; }
+    .mission-item a { color: #ffb3b3; text-decoration: none; }
+    .mission-reward { color: #b9f6bc; }
+    .code-row { display: flex; gap: 8px; margin-bottom: 6px; }
+    .code-input-wrapper { flex: 1; display: flex; background: #30050b; border-radius: 40px; padding: 4px; }
+    .code-input-wrapper input { flex: 1; background: transparent; border: none; color: white; padding: 10px; outline: none; }
+    .btn-check-code {
+      background: #ffb300;
+      border: none;
+      font-weight: 700;
+      border-radius: 40px;
+      padding: 0 20px;
+      cursor: pointer;
+    }
+
+    .code-modal, .cooldown-modal, .success-modal, .rejected-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 100;
+    }
+    .code-modal-panel {
+      background: #3c0a12; padding: 30px; border-radius: 40px; text-align: center; max-width: 380px; width: 90%;
+      border: 1px solid #ff6b81;
+    }
+    .modal-close { float: right; background: none; border: none; color: white; font-size: 1.5rem; }
+
+    .app-footer { text-align: center; margin-top: 25px; opacity: 0.8; color: #ffcdd5; }
+    .app-footer a { color: #ffb7c3; }
+
+    @media (max-width: 480px) {
+      .glass-card { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-glow bg-glow-3"></div>
+
+  <div class="app-container">
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo-icon">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%239e1b2f'/%3E%3Ctext x='50' y='65' font-size='50' text-anchor='middle' fill='%23ffd966' font-weight='bold'%3E⚔️%3C/text%3E%3C/svg%3E" alt="NMT Logo">
+        </div>
+        <div class="brand-text">
+          <h1>LQ.NMT.VN</h1>
+          <p>Thay Ảnh Loading Liên Quân Miễn Phí</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-grid">
+      <div class="column-left">
+        <div class="glass-card">
+          <div class="card-header"><span class="step-num">1</span><h2>Hướng Dẫn iPhone/iPad</h2></div>
+          <input id="harFileInput" type="file" style="display:none;" accept="*/*">
+          <button id="btnChooseHar" class="har-upload-button" style="background:#57101b;padding:12px;border-radius:20px;width:100%;color:white;border:none;cursor:pointer;font-weight:600;">📤 Chọn File HAR (từ Stream)</button>
+          <p id="harStatus" style="font-size:0.8rem;color:#f0c1c9;"></p>
+          <a class="inline-guide-button" href="https://www.tiktok.com/@onetopsvmc" target="_blank" rel="noopener noreferrer" id="tiktokRewardLink">▶️ Xem hướng dẫn iPhone/iPad (Stream) – Nhận lượt</a>
+        </div>
+
+        <div class="glass-card poster-editor-card">
+          <div class="card-header"><span class="step-num">2</span><h2>Chọn/Chỉnh Ảnh</h2><button id="btnChangeImage" class="change-image-button">🖼️ Chọn Ảnh</button></div>
+          <input type="file" id="fileInput" accept="image/*" style="display:none;">
+          <div class="poster-preview-container">
+            <div class="aov-poster-frame" id="editorFrame">
+              <canvas id="posterCanvas" width="1080" height="1701" style="width:100%;height:100%;display:block;"></canvas>
+              <div id="watermarkPreview" class="watermark-preview" style="background: transparent; padding: 0; bottom: 16px; right: 16px;">
+                <span style="font-size: 1rem; font-weight: 500; color: #ffffff;">thay ảnh free tại </span>
+                <span style="font-size: 1rem; font-weight: 800; color: #39ff88; text-shadow: 0 0 10px #39ff88;">NMT.VN</span>
+              </div>
+              <button class="no-img-placeholder" id="dropzone">🖼️ Tải ảnh lên</button>
+            </div>
+          </div>
+          <p id="moderationStatus" style="color:#ffb0b0;font-size:0.8rem;"></p>
+          <div id="titleControls" class="title-controls hidden">
+            <label>Danh hiệu: <select id="titleSelect"><option value="">Không dùng</option></select></label>
+            <input id="titleScale" type="range" min="40" max="160" value="76"><span id="titleScaleValue">76%</span>
+          </div>
+          <div id="cropControls" class="crop-controls hidden">
+            <input id="zoomRange" type="range" min="100" max="300" value="100"><span id="zoomValue">100%</span>
+            <button id="btnCenterImage">🎯 Căn giữa</button>
+          </div>
+        </div>
+
+        <button id="btnSubmit" class="btn-action">✨ Bắt Đầu Thay Ảnh</button>
+      </div>
+
+      <div class="column-right">
+        <div class="glass-card stats-section">
+          <div class="card-header"><span class="step-num">3</span><h2>Thống Kê Người Dùng</h2></div>
+          <div style="display:flex;gap:12px;">
+            <div class="stat-tile success">Thành công <strong id="statSuccessCount">9.850</strong></div>
+            <div class="stat-tile rejected">Từ chối <strong id="statRejectedCount">120</strong></div>
+          </div>
+          <small style="color:#ffb3b3;">Cố ý thay ảnh phản cảm sẽ bị cấm vĩnh viễn</small>
+        </div>
+
+        <div class="glass-card mission-box">
+          <div class="card-header"><span class="step-num">4</span><h2>Nhận Lượt Xóa Logo <strong style="color:#b9f6bc;" id="creditCount">0</strong></h2></div>
+          <div class="referral-card">
+            <div><strong>🔗 Link giới thiệu bạn bè</strong></div>
+            <div class="referral-link-row">
+              <input id="referralLink" value="https://lq.nmt.vn/?ref=abc" readonly>
+              <button class="btn-copy-referral" id="copyReferral">Sao chép</button>
+            </div>
+            <ul class="mission-list">
+              <li>✅ Mời 1 bạn thành công ➔ +1 lượt xóa</li>
+              <li>🔁 Thành công 4 lần ➔ +1 lượt xóa</li>
+            </ul>
+          </div>
+          <ul class="mission-list">
+            <li>🎵 Theo dõi TikTok <a href="https://www.tiktok.com/@onetopsvmc" target="_blank" rel="noopener noreferrer" class="tiktok-claim-link">@onetopsvmc</a> ➔ +1 lượt (tối đa 2 lần)</li>
+            <li>❤️ Thả tim + Đăng lại video ➔ +1 lượt</li>
+            <li>💬 Gửi tin nhắn xác nhận</li>
+          </ul>
+        </div>
+
+        <div class="glass-card code-section">
+          <div class="card-header"><span class="step-num">5</span><h2>Nhập Code Nhận Lượt</h2></div>
+          <div class="code-row">
+            <div class="code-input-wrapper"><input id="watermarkCode" placeholder="Nhập giftcode"><button id="btnPasteCode" class="btn-paste-inline-modal">📋</button></div>
+            <button id="btnCheckCode" class="btn-check-code">Áp dụng</button>
+          </div>
+          <p id="codeStatus" style="color:#b0e57c;"></p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="app-footer">© Crafted with ❤️ by <a href="#" onclick="alert('Cần Hoàng Bảo Nam')">Cần Hoàng Bảo Nam</a> – lq.nmt.vn</footer>
+  </div>
+
+  <!-- Modals -->
+  <div id="cooldownModal" class="code-modal hidden">
+    <div class="code-modal-panel" style="color:white;">
+      <button id="btnCloseCooldown" class="modal-close">✕</button>
+      <div style="font-size:2rem;">⏳</div>
+      <h3>Chưa thể thay ảnh</h3>
+      <p>Vui lòng chờ <strong id="cooldownRemaining">10:00:00</strong> hoặc nhận lượt bỏ qua.</p>
+      <button id="btnCooldownTasks" style="background:#2f6b4f;padding:10px 20px;border:none;border-radius:30px;color:white;">Nhận lượt miễn phí</button>
+    </div>
+  </div>
+
+  <div id="successModal" class="code-modal hidden">
+    <div class="code-modal-panel" style="color:white;">
+      <button id="btnCloseSuccess" class="modal-close">✕</button>
+      <div style="font-size:3rem;">👌🏼</div>
+      <h3>Thay đổi ảnh thành công!</h3>
+      <p>Vào game xem ngay.</p>
+      <button id="btnSuccessDone" style="background:#1c5e3c;padding:10px 30px;border:none;border-radius:30px;color:white;">Tuyệt vời</button>
+    </div>
+  </div>
+
+  <div id="rejectedModal" class="code-modal hidden">
+    <div class="code-modal-panel" style="color:white;">
+      <button id="btnCloseRejected" class="modal-close">✕</button>
+      <div>🛡️</div>
+      <h3>Ảnh không phù hợp</h3>
+      <p>Chọn ảnh khác nhé.</p>
+      <button id="btnChooseAnotherImage" style="background:#9b3b4a;padding:10px 24px;border:none;border-radius:30px;color:white;">Chọn ảnh khác</button>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ====== HỆ THỐNG LƯỢT (localStorage) ======
+      const STORAGE_KEY = 'nmt_free_credits';
+      const TIKTOK_CLAIM_KEY = 'nmt_tiktok_claims';
+      
+      function getCredits() {
+        return parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+      }
+      function setCredits(val) {
+        localStorage.setItem(STORAGE_KEY, val);
+        document.getElementById('creditCount').textContent = val;
+      }
+      function getTiktokClaims() {
+        return parseInt(localStorage.getItem(TIKTOK_CLAIM_KEY) || '0', 10);
+      }
+      function incrementTiktokClaims() {
+        const c = getTiktokClaims();
+        localStorage.setItem(TIKTOK_CLAIM_KEY, c + 1);
+      }
+      
+      // Cập nhật hiển thị ban đầu
+      document.getElementById('creditCount').textContent = getCredits();
+
+      // Xử lý nhận thưởng khi click link TikTok (max 2 lần)
+      function claimTiktokReward(e) {
+        e.preventDefault();
+        const currentClaims = getTiktokClaims();
+        if (currentClaims >= 2) {
+          alert('⚠️ Bạn đã nhận đủ 2 lượt từ TikTok trên máy này.');
+          window.open('https://www.tiktok.com/@onetopsvmc', '_blank');
+          return;
+        }
+        // Cộng lượt
+        setCredits(getCredits() + 1);
+        incrementTiktokClaims();
+        alert('✅ Bạn nhận được +1 lượt xóa watermark! (TikTok)');
+        window.open('https://www.tiktok.com/@onetopsvmc', '_blank');
+      }
+
+      // Gắn sự kiện cho tất cả link tiktok
+      document.querySelectorAll('.tiktok-claim-link, #tiktokRewardLink').forEach(link => {
+        link.addEventListener('click', claimTiktokReward);
+      });
+
+      // Khi chia sẻ link và có người vào (giả lập +1 lượt khi bấm nút sao chép)
+      document.getElementById('copyReferral').addEventListener('click', ()=>{
+        const link = document.getElementById('referralLink').value;
+        navigator.clipboard?.writeText(link);
+        // Giả lập có người vào (tăng 1 lượt)
+        setCredits(getCredits() + 1);
+        alert('📋 Đã sao chép link! Bạn nhận +1 lượt khi có người vào (giả lập +1 để test).');
+      });
+
+      // ====== THỐNG KÊ ======
+      let successCount = 9850;
+      let rejectedCount = 120;
+      const successEl = document.getElementById('statSuccessCount');
+      const rejectedEl = document.getElementById('statRejectedCount');
+      function formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+      successEl.textContent = formatNumber(successCount);
+      rejectedEl.textContent = formatNumber(rejectedCount);
+      setInterval(() => {
+        const incSuccess = Math.random() < 0.6 ? 1 : 2;
+        successCount += incSuccess;
+        successEl.textContent = formatNumber(successCount);
+        if (Math.random() < 0.15) {
+          rejectedCount += 1;
+          rejectedEl.textContent = formatNumber(rejectedCount);
+        }
+      }, 6000);
+
+      // ====== XỬ LÝ ẢNH ======
+      const fileInput = document.getElementById('fileInput');
+      const btnChangeImage = document.getElementById('btnChangeImage');
+      const dropzone = document.getElementById('dropzone');
+      const canvas = document.getElementById('posterCanvas');
+      const ctx = canvas.getContext('2d');
+      let currentImage = null;
+      let hasImage = false;
+      let imgScale = 1, imgOffsetX = 0, imgOffsetY = 0;
+      let noWatermark = false; // sẽ thành true nếu có lượt
+
+      function drawWatermark() {
+        if (!hasImage) return;
+        ctx.save();
+        ctx.font = 'bold 32px "Segoe UI", sans-serif';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
+        if (getCredits() > 0) {
+          // Có lượt: ẩn watermark
+          ctx.restore();
+          return;
+        }
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText('thay ảnh free tại ', canvas.width - 30, canvas.height - 30);
+        const textWidth = ctx.measureText('thay ảnh free tại ').width;
+        ctx.fillStyle = '#39ff88';
+        ctx.shadowColor = '#39ff88';
+        ctx.shadowBlur = 14;
+        ctx.fillText('NMT.VN', canvas.width - 30 - textWidth, canvas.height - 30);
+        ctx.restore();
+      }
+
+      function drawImageToCanvas() {
+        if(!currentImage) return;
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(canvas.width/2, canvas.height/2);
+        ctx.scale(imgScale, imgScale);
+        ctx.translate(-canvas.width/2 + imgOffsetX, -canvas.height/2 + imgOffsetY);
+        ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+        ctx.restore();
+        drawWatermark();
+      }
+
+      function loadImageToCanvas(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            currentImage = img;
+            hasImage = true;
+            drawImageToCanvas();
+            dropzone.style.display = 'none';
+            document.getElementById('cropControls').classList.remove('hidden');
+          };
+          img.src = e.target.result;
+        };
+        if(file) reader.readAsDataURL(file);
+      }
+
+      btnChangeImage.addEventListener('click', () => fileInput.click());
+      dropzone.addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', (e) => {
+        if(e.target.files[0]) loadImageToCanvas(e.target.files[0]);
+      });
+
+      const zoomRange = document.getElementById('zoomRange');
+      const zoomValue = document.getElementById('zoomValue');
+      zoomRange.addEventListener('input', () => {
+        imgScale = zoomRange.value / 100;
+        zoomValue.textContent = Math.round(imgScale*100)+'%';
+        drawImageToCanvas();
+      });
+
+      document.getElementById('btnCenterImage').addEventListener('click', () => {
+        imgOffsetX = 0; imgOffsetY = 0; imgScale = 1; zoomRange.value = 100; zoomValue.textContent = '100%';
+        drawImageToCanvas();
+      });
+
+      document.getElementById('btnSubmit').addEventListener('click', () => {
+        if(!hasImage) { alert('Vui lòng chọn ảnh trước'); return; }
+        if(Math.random() < 0.2) {
+          document.getElementById('rejectedModal').classList.remove('hidden');
+        } else {
+          document.getElementById('successModal').classList.remove('hidden');
+        }
+      });
+
+      document.getElementById('btnCloseCooldown').addEventListener('click', ()=> document.getElementById('cooldownModal').classList.add('hidden'));
+      document.getElementById('btnCloseSuccess').addEventListener('click', ()=> document.getElementById('successModal').classList.add('hidden'));
+      document.getElementById('btnCloseRejected').addEventListener('click', ()=> document.getElementById('rejectedModal').classList.add('hidden'));
+      document.getElementById('btnSuccessDone').addEventListener('click', ()=> document.getElementById('successModal').classList.add('hidden'));
+      document.getElementById('btnChooseAnotherImage').addEventListener('click', ()=> { document.getElementById('rejectedModal').classList.add('hidden'); fileInput.click(); });
+      document.getElementById('btnCooldownTasks').addEventListener('click', ()=> { document.getElementById('cooldownModal').classList.add('hidden'); alert('Làm nhiệm vụ nhận lượt!'); });
+
+      document.getElementById('btnPasteCode').addEventListener('click', async ()=>{
+        const text = await navigator.clipboard.readText();
+        document.getElementById('watermarkCode').value = text;
+      });
+      document.getElementById('btnChooseHar').addEventListener('click', ()=> document.getElementById('harFileInput').click());
+      document.getElementById('harFileInput').addEventListener('change', (e)=> {
+        document.getElementById('harStatus').textContent = e.target.files[0] ? '✅ Đã chọn file HAR' : '';
+      });
+
+      document.getElementById('btnCheckCode').addEventListener('click', ()=>{
+        const code = document.getElementById('watermarkCode').value.trim();
+        if(code === 'FREELQ') { 
+          setCredits(getCredits() + 1);
+          document.getElementById('codeStatus').textContent = '✅ Code hợp lệ! +1 lượt xóa logo';
+        } else if(code) {
+          document.getElementById('codeStatus').textContent = '❌ Code không đúng hoặc đã hết hạn';
+        }
+      });
+
+      ctx.fillStyle = '#30060b';
+      ctx.fillRect(0,0,canvas.width, canvas.height);
+      ctx.fillStyle = '#f0b9c2';
+      ctx.font = 'bold 30px sans-serif';
+      ctx.fillText('Tải ảnh lên', 300, 800);
+    })();
+  </script>
+</body>
+</html>
